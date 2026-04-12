@@ -142,7 +142,10 @@ function App() {
       <div className="card">
         <div className="header">
           <h2>Task Manager</h2>
-          <button onClick={() => setDarkMode(!darkMode)}>
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            // style={{ background: "#0f172a" }}
+          >
             {darkMode ? "☀️" : "🌙"}
           </button>
         </div>

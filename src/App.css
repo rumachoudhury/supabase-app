@@ -193,9 +193,17 @@
   background: #f1f5f9;
   transition: 0.3s;
 }
-
+/* 
 .app.dark {
   background: #0f172a;
+} */
+
+/* .app.dark {
+  background: linear-gradient(135deg, #0f172a, #020617);
+} */
+
+.app.dark {
+  background: #111827;
 }
 
 /* Card */
