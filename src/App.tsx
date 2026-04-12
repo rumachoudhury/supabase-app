@@ -4,7 +4,7 @@ import { useState } from "react";
 // import heroImg from "./assets/hero.png";
 import "./App.css";
 
-import supabase from "./supabase-client";
+import { supabase } from "./supabase-client";
 
 function App() {
   const [newtask, setNewTask] = useState({
@@ -14,13 +14,27 @@ function App() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await supabase.from("tasks").insert([newtask]);
+    const { error } = await supabase.from("tasks").insert([newtask]);
+
+    if (error) {
+      console.error("Error adding task:", error.message);
+    }
+
+    setNewTask({ title: "", description: "" });
   };
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h2>Task Manager CRUD</h2>
+      <h2 style={{ color: "#333" }}>Task Manager CRUD</h2>
 
-      <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          marginBottom: "1rem",
+          border: "1px solid #ccc",
+          padding: "1rem",
+          borderRadius: "4px",
+        }}
+      >
         <input
           type="text"
           name=""
@@ -29,7 +43,13 @@ function App() {
           onChange={(e) =>
             setNewTask((prev) => ({ ...prev, title: e.target.value }))
           }
-          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
+          style={{
+            width: "100%",
+            marginBottom: "0.5rem",
+            padding: "0.5rem",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+          }}
         />
         <textarea
           name=""
@@ -56,6 +76,7 @@ function App() {
         >
           {/* <strong>{task.title}</strong> */}
           {/* <p>{task.description}</p> */}
+          No tasks yet
         </li>
       </ul>
     </div>
