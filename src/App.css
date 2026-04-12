@@ -1,4 +1,4 @@
-.counter {
+/* .counter {
   font-size: 16px;
   padding: 5px 10px;
   border-radius: 5px;
@@ -180,5 +180,114 @@
   &::after {
     right: 0;
     border-right-color: var(--border);
+  }
+} */
+
+/* ======================================= */
+/* Layout */
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f5f9;
+  transition: 0.3s;
+}
+
+.app.dark {
+  background: #0f172a;
+}
+
+/* Card */
+.card {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: fadeIn 0.5s ease;
+}
+
+.app.dark .card {
+  background: #1e293b;
+  color: white;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Form */
+.form input,
+.form textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: 0.2s;
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: #e05915;
+  box-shadow: 0 0 0 2px rgba(224, 89, 21, 0.2);
+}
+
+/* Button */
+.form button {
+  margin-top: 10px;
+  padding: 10px;
+  width: 100%;
+  background: #e05915;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Task List */
+.task-list {
+  margin-top: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  background: #f9fafb;
+  transition: 0.2s;
+}
+
+.app.dark .task-item {
+  background: #334155;
+}
+
+.task-item:hover {
+  transform: scale(1.02);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

@@ -1,9 +1,120 @@
-import { useState } from "react";
-// import reactLogo from "./assets/react.svg";
-// import viteLogo from "./assets/vite.svg";
-// import heroImg from "./assets/hero.png";
-import "./App.css";
+// import { useState } from "react";
+// // import reactLogo from "./assets/react.svg";
+// // import viteLogo from "./assets/vite.svg";
+// // import heroImg from "./assets/hero.png";
+// import "./App.css";
 
+// import { supabase } from "./supabase-client";
+
+// function App() {
+//   const [newtask, setNewTask] = useState({
+//     title: "",
+//     description: "",
+//   });
+
+//   const handleSubmit = async (e: any) => {
+//     e.preventDefault();
+//     const { error } = await supabase.from("tasks").insert([newtask]);
+
+//     if (error) {
+//       console.error("Error adding task:", error.message);
+//     }
+
+//     setNewTask({ title: "", description: "" });
+//   };
+//   return (
+//     <div className="body">
+//       <div
+//         style={{
+//           maxWidth: "600px",
+//           margin: "0 auto",
+//           background: "#f9f9f9",
+//           padding: "2rem",
+//           borderRadius: "8px",
+//           marginTop: "2rem",
+//           boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+//         }}
+//       >
+//         <h2 style={{ color: "#e05915ff", textAlign: "center" }}>
+//           Task Manager CRUD
+//         </h2>
+
+//         <form
+//           onSubmit={handleSubmit}
+//           style={{
+//             marginBottom: "1rem",
+//             border: "1px solid #ccc",
+//             padding: "1rem",
+//             borderRadius: "4px",
+//           }}
+//         >
+//           <input
+//             type="text"
+//             name=""
+//             id=""
+//             placeholder="Task Title"
+//             onChange={(e) =>
+//               setNewTask((prev) => ({ ...prev, title: e.target.value }))
+//             }
+//             style={{
+//               width: "100%",
+//               marginBottom: "0.5rem",
+//               padding: "0.5rem",
+//               border: "1px solid #ccc",
+//               borderRadius: "4px",
+//             }}
+//           />
+//           <textarea
+//             name=""
+//             id=""
+//             placeholder="Task Description"
+//             onChange={(e) =>
+//               setNewTask((prev) => ({ ...prev, description: e.target.value }))
+//             }
+//             style={{
+//               width: "100%",
+//               marginBottom: "0.5rem",
+//               padding: "0.5rem",
+//             }}
+//           ></textarea>
+//           <button
+//             type="submit"
+//             style={{
+//               padding: "0.5rem 1rem",
+//               color: "#fff",
+//               backgroundColor: "#e05915ff",
+//               border: "none",
+//               borderRadius: "4px",
+//             }}
+//           >
+//             Add Task
+//           </button>
+//         </form>
+
+//         {/* Task List */}
+//         <ul style={{ listStyle: "none", padding: "0" }}>
+//           <li
+//             style={{
+//               border: "1px solid #ccc",
+//               padding: "1rem",
+//               marginBottom: "0.5rem",
+//             }}
+//           >
+//             {/* <strong>{task.title}</strong> */}
+//             {/* <p>{task.description}</p> */}
+//             No tasks yet
+//           </li>
+//         </ul>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default App;
+
+// =============================================================================
+import { useState } from "react";
+import "./App.css";
 import { supabase } from "./supabase-client";
 
 function App() {
@@ -12,272 +123,57 @@ function App() {
     description: "",
   });
 
-  const handleSubmit = async (e: any) => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     const { error } = await supabase.from("tasks").insert([newtask]);
 
     if (error) {
-      console.error("Error adding task:", error.message);
+      console.error("Error:", error.message);
     }
 
     setNewTask({ title: "", description: "" });
   };
+
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-      <h2 style={{ color: "#333" }}>Task Manager CRUD</h2>
+    <div className={darkMode ? "app dark" : "app"}>
+      <div className="card">
+        <div className="header">
+          <h2>Task Manager</h2>
+          <button onClick={() => setDarkMode(!darkMode)}>
+            {darkMode ? "☀️" : "🌙"}
+          </button>
+        </div>
 
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          marginBottom: "1rem",
-          border: "1px solid #ccc",
-          padding: "1rem",
-          borderRadius: "4px",
-        }}
-      >
-        <input
-          type="text"
-          name=""
-          id=""
-          placeholder="Task Title"
-          onChange={(e) =>
-            setNewTask((prev) => ({ ...prev, title: e.target.value }))
-          }
-          style={{
-            width: "100%",
-            marginBottom: "0.5rem",
-            padding: "0.5rem",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-          }}
-        />
-        <textarea
-          name=""
-          id=""
-          placeholder="Task Description"
-          onChange={(e) =>
-            setNewTask((prev) => ({ ...prev, description: e.target.value }))
-          }
-          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
-        ></textarea>
-        <button type="submit" style={{ padding: "0.5rem 1rem" }}>
-          Add Task
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="form">
+          <input
+            type="text"
+            placeholder="Task Title"
+            value={newtask.title}
+            onChange={(e) =>
+              setNewTask((prev) => ({ ...prev, title: e.target.value }))
+            }
+          />
 
-      {/* Task List */}
-      <ul style={{ listStyle: "none", padding: "0" }}>
-        <li
-          style={{
-            border: "1px solid #ccc",
-            padding: "1rem",
-            marginBottom: "0.5rem",
-          }}
-        >
-          {/* <strong>{task.title}</strong> */}
-          {/* <p>{task.description}</p> */}
-          No tasks yet
-        </li>
-      </ul>
+          <textarea
+            placeholder="Task Description"
+            value={newtask.description}
+            onChange={(e) =>
+              setNewTask((prev) => ({ ...prev, description: e.target.value }))
+            }
+          />
+
+          <button type="submit">Add Task</button>
+        </form>
+
+        <ul className="task-list">
+          <li className="task-item">No tasks yet</li>
+        </ul>
+      </div>
     </div>
-    // <>
-    //   <section id="center">
-    //     <div className="hero">
-    //       <img src={heroImg} className="base" width="170" height="179" alt="" />
-    //       <img src={reactLogo} className="framework" alt="React logo" />
-    //       <img src={viteLogo} className="vite" alt="Vite logo" />
-    //     </div>
-    //     <div>
-    //       <h1>Get started</h1>
-    //       <p>
-    //         Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-    //       </p>
-    //     </div>
-    //     <button
-    //       className="counter"
-    //       onClick={() => setCount((count) => count + 1)}
-    //     >
-    //       Count is {count}
-    //     </button>
-    //   </section>
-
-    //   <div className="ticks"></div>
-
-    //   <section id="next-steps">
-    //     <div id="docs">
-    //       <svg className="icon" role="presentation" aria-hidden="true">
-    //         <use href="/icons.svg#documentation-icon"></use>
-    //       </svg>
-    //       <h2>Documentation</h2>
-    //       <p>Your questions, answered</p>
-    //       <ul>
-    //         <li>
-    //           <a href="https://vite.dev/" target="_blank">
-    //             <img className="logo" src={viteLogo} alt="" />
-    //             Explore Vite
-    //           </a>
-    //         </li>
-    //         <li>
-    //           <a href="https://react.dev/" target="_blank">
-    //             <img className="button-icon" src={reactLogo} alt="" />
-    //             Learn more
-    //           </a>
-    //         </li>
-    //       </ul>
-    //     </div>
-    //     <div id="social">
-    //       <svg className="icon" role="presentation" aria-hidden="true">
-    //         <use href="/icons.svg#social-icon"></use>
-    //       </svg>
-    //       <h2>Connect with us</h2>
-    //       <p>Join the Vite community</p>
-    //       <ul>
-    //         <li>
-    //           <a href="https://github.com/vitejs/vite" target="_blank">
-    //             <svg
-    //               className="button-icon"
-    //               role="presentation"
-    //               aria-hidden="true"
-    //             >
-    //               <use href="/icons.svg#github-icon"></use>
-    //             </svg>
-    //             GitHub
-    //           </a>
-    //         </li>
-    //         <li>
-    //           <a href="https://chat.vite.dev/" target="_blank">
-    //             <svg
-    //               className="button-icon"
-    //               role="presentation"
-    //               aria-hidden="true"
-    //             >
-    //               <use href="/icons.svg#discord-icon"></use>
-    //             </svg>
-    //             Discord
-    //           </a>
-    //         </li>
-    //         <li>
-    //           <a href="https://x.com/vite_js" target="_blank">
-    //             <svg
-    //               className="button-icon"
-    //               role="presentation"
-    //               aria-hidden="true"
-    //             >
-    //               <use href="/icons.svg#x-icon"></use>
-    //             </svg>
-    //             X.com
-    //           </a>
-    //         </li>
-    //         <li>
-    //           <a href="https://bsky.app/profile/vite.dev" target="_blank">
-    //             <svg
-    //               className="button-icon"
-    //               role="presentation"
-    //               aria-hidden="true"
-    //             >
-    //               <use href="/icons.svg#bluesky-icon"></use>
-    //             </svg>
-    //             Bluesky
-    //           </a>
-    //         </li>
-    //       </ul>
-    //     </div>
-    //   </section>
-
-    //   <div className="ticks"></div>
-    //   <section id="spacer"></section>
-    // </>
   );
 }
 
 export default App;
-
-// --------
-// import { useEffect, useState } from "react";
-// import "./App.css";
-// import supabase from "./supabase-client";
-
-// function App() {
-//   const [title, setTitle] = useState("");
-//   const [description, setDescription] = useState("");
-//   const [tasks, setTasks] = useState<any[]>([]);
-
-//   // 📥 Fetch tasks
-//   useEffect(() => {
-//     fetchTasks();
-//   }, []);
-
-//   async function fetchTasks() {
-//     const { data, error } = await supabase.from("tasks").select("*");
-
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       setTasks(data);
-//     }
-//   }
-
-//   // ➕ Add task
-//   async function handleSubmit(e: any) {
-//     e.preventDefault();
-
-//     const { error } = await supabase.from("tasks").insert([
-//       {
-//         title,
-//         description,
-//       },
-//     ]);
-
-//     if (error) {
-//       console.log(error);
-//     } else {
-//       setTitle("");
-//       setDescription("");
-//       fetchTasks();
-//     }
-//   }
-
-//   return (
-//     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-//       <h2>Task Manager CRUD</h2>
-
-//       <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
-//         <input
-//           type="text"
-//           placeholder="Task Title"
-//           value={title}
-//           onChange={(e) => setTitle(e.target.value)}
-//           style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
-//         />
-//         <textarea
-//           placeholder="Task Description"
-//           value={description}
-//           onChange={(e) => setDescription(e.target.value)}
-//           style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
-//         ></textarea>
-//         <button type="submit" style={{ padding: "0.5rem 1rem" }}>
-//           Add Task
-//         </button>
-//       </form>
-
-//       {/* Task List */}
-//       <ul style={{ listStyle: "none", padding: "0" }}>
-//         {tasks.map((task) => (
-//           <li
-//             key={task.id}
-//             style={{
-//               border: "1px solid #ccc",
-//               padding: "1rem",
-//               marginBottom: "0.5rem",
-//             }}
-//           >
-//             <strong>{task.title}</strong>
-//             <p>{task.description}</p>
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }
-
-// export default App;
