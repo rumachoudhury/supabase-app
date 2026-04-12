@@ -2,27 +2,43 @@ import { useState } from "react";
 // import reactLogo from "./assets/react.svg";
 // import viteLogo from "./assets/vite.svg";
 // import heroImg from "./assets/hero.png";
-// import "./App.css";
+import "./App.css";
+
+import supabase from "./supabase-client";
 
 function App() {
-  const [newtask, setNewTask] = useState("");
+  const [newtask, setNewTask] = useState({
+    title: "",
+    description: "",
+  });
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    await supabase.from("tasks").insert([newtask]);
+  };
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto" }}>
       <h2>Task Manager CRUD</h2>
 
-      <form style={{ marginBottom: "1rem" }}>
+      <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
         <input
           type="text"
           name=""
           id=""
           placeholder="Task Title"
+          onChange={(e) =>
+            setNewTask((prev) => ({ ...prev, title: e.target.value }))
+          }
           style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
         />
         <textarea
           name=""
           id=""
           placeholder="Task Description"
-          style={{ width: "100%", marginBottom: "0.5rem", padding: "o.5rem" }}
+          onChange={(e) =>
+            setNewTask((prev) => ({ ...prev, description: e.target.value }))
+          }
+          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
         ></textarea>
         <button type="submit" style={{ padding: "0.5rem 1rem" }}>
           Add Task
