@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { supabase } from "./supabase-client";
+
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  created_at: string;
+}
 
 function App() {
   const [newtask, setNewTask] = useState({
     title: "",
     description: "",
   });
+
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const [darkMode, setDarkMode] = useState(false);
 
@@ -21,7 +30,7 @@ function App() {
       return;
     }
 
-    console.log(data);
+    setTasks(data);
   };
 
   const handleSubmit = async (e: any) => {
@@ -36,6 +45,9 @@ function App() {
     setNewTask({ title: "", description: "" });
   };
 
+  useEffect(() => {
+    fetchTasks();
+  });
   return (
     <div className={darkMode ? "app dark" : "app"}>
       <div className="card">
