@@ -30,24 +30,26 @@ function App() {
       return;
     }
 
-    setTasks(data);
+    setTasks(data ?? []);
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const { error } = await supabase.from("tasks").insert(newtask).single();
+    const { error } = await supabase.from("tasks").insert(newtask);
 
     if (error) {
       console.error("Error:", error.message);
     }
 
     setNewTask({ title: "", description: "" });
+
+    await fetchTasks();
   };
 
   useEffect(() => {
     fetchTasks();
-  });
+  }, []);
   return (
     <div className={darkMode ? "app dark" : "app"}>
       <div className="card">
@@ -82,8 +84,21 @@ function App() {
           <button type="submit">Add Task</button>
         </form>
 
-        <ul className="task-list">
+        {/* <ul className="task-list">
           <li className="task-item">No tasks yet</li>
+        </ul> */}
+
+        <ul className="task-list">
+          {tasks.length === 0 ? (
+            <li className="task-item">No tasks yet</li>
+          ) : (
+            tasks.map((task) => (
+              <li key={task.id} className="task-item">
+                <h3>{task.title}</h3>
+                <p>{task.description}</p>
+              </li>
+            ))
+          )}
         </ul>
       </div>
     </div>
