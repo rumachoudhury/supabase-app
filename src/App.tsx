@@ -54,6 +54,8 @@ function App() {
       console.error("Error deleting task", error.message);
       return;
     }
+
+    await fetchTasks(); // refresh UI
   };
 
   useEffect(() => {
@@ -108,6 +110,8 @@ function App() {
               <div>
                 <h3>{task.title}</h3>
                 <p>{task.description}</p>
+
+                <textarea name="" id="" placeholder="Updated descripition..." />
                 <div>
                   <button
                     style={{ marginRight: "0.5rem", padding: "0.5rem 1 rem" }}
