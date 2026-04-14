@@ -84,11 +84,32 @@ function App() {
           <button type="submit">Add Task</button>
         </form>
 
-        {/* <ul className="task-list">
-          <li className="task-item">No tasks yet</li>
-        </ul> */}
+        <ul className="task-list" style={{ listStyle: "none", padding: 0 }}>
+          <li
+            className="task-item"
+            style={{
+              border: "1px solid #ccc",
+              padding: "1rem",
+              borderRadius: "4px",
+              marginBottom: "0.5rem",
+            }}
+          >
+            <div>
+              <h3>Title:</h3>
+              <p>Description:</p>
+              <div>
+                <button
+                  style={{ marginRight: "0.5rem", padding: "0.5rem 1 rem" }}
+                >
+                  Edit
+                </button>
+                <button style={{ padding: "0.5rem 1 rem" }}>Delete</button>
+              </div>
+            </div>
+          </li>
+        </ul>
 
-        <ul className="task-list">
+        {/* <ul className="task-list">
           {tasks.length === 0 ? (
             <li className="task-item">No tasks yet</li>
           ) : (
@@ -99,7 +120,7 @@ function App() {
               </li>
             ))
           )}
-        </ul>
+        </ul> */}
       </div>
     </div>
   );
