@@ -47,6 +47,15 @@ function App() {
     await fetchTasks();
   };
 
+  const deleteTask = async (id: number) => {
+    const { error } = await supabase.from("tasks").delete().eq("id", id); //"eq" means equals here
+
+    if (error) {
+      console.error("Error deleting task", error.message);
+      return;
+    }
+  };
+
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -85,28 +94,36 @@ function App() {
         </form>
 
         <ul className="task-list" style={{ listStyle: "none", padding: 0 }}>
-          <li
-            className="task-item"
-            style={{
-              border: "1px solid #ccc",
-              padding: "1rem",
-              borderRadius: "4px",
-              marginBottom: "0.5rem",
-            }}
-          >
-            <div>
-              <h3>Title:</h3>
-              <p>Description:</p>
+          {tasks.map((task, key) => (
+            <li
+              key={key}
+              className="task-item"
+              style={{
+                border: "1px solid #ccc",
+                padding: "1rem",
+                borderRadius: "4px",
+                marginBottom: "0.5rem",
+              }}
+            >
               <div>
-                <button
-                  style={{ marginRight: "0.5rem", padding: "0.5rem 1 rem" }}
-                >
-                  Edit
-                </button>
-                <button style={{ padding: "0.5rem 1 rem" }}>Delete</button>
+                <h3>{task.title}</h3>
+                <p>{task.description}</p>
+                <div>
+                  <button
+                    style={{ marginRight: "0.5rem", padding: "0.5rem 1 rem" }}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    style={{ padding: "0.5rem 1 rem" }}
+                    onClick={() => deleteTask(task.id)} // call deleteTask with the task's id when clicked
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-            </div>
-          </li>
+            </li>
+          ))}
         </ul>
 
         {/* <ul className="task-list">
