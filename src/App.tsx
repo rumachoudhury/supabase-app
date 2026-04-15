@@ -19,6 +19,8 @@ function App() {
 
   const [darkMode, setDarkMode] = useState(false);
 
+  const [newDescription, setNewDescription] = useState("");
+
   const fetchTasks = async () => {
     const { data, error } = await supabase
       .from("tasks")
@@ -52,6 +54,20 @@ function App() {
 
     if (error) {
       console.error("Error deleting task", error.message);
+      return;
+    }
+
+    await fetchTasks(); // refresh UI
+  };
+
+  const updateTask = async (id: number) => {
+    const { error } = await supabase
+      .from("tasks")
+      .update({ description: newDescription })
+      .eq("id", id); //"eq" means equals here
+
+    if (error) {
+      console.error("Error update task", error.message);
       return;
     }
 
@@ -111,10 +127,16 @@ function App() {
                 <h3>{task.title}</h3>
                 <p>{task.description}</p>
 
-                <textarea name="" id="" placeholder="Updated descripition..." />
+                <textarea
+                  name=""
+                  id=""
+                  placeholder="Updated descripition..."
+                  onChange={(e) => setNewDescription(e.target.value)}
+                />
                 <div>
                   <button
                     style={{ marginRight: "0.5rem", padding: "0.5rem 1 rem" }}
+                    onClick={() => updateTask(task.id)}
                   >
                     Edit
                   </button>
