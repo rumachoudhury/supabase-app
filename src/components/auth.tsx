@@ -20,6 +20,24 @@ export const Auth = () => {
             setEmail(e.target.value)
           }
         />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPassword(e.target.value)
+          }
+          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5 rem" }}
+        />
+
+        <button
+          type="submit"
+          style={{ padding: "0.5rem", marginRight: "0.5rem" }}
+        >
+          {/* "Sign Up"--> if isSignUp is true, otherwise--> "Sign In" */}
+          {isSignUp ? "Sign Up" : "Sign In"}
+        </button>
       </form>
     </div>
   );
