@@ -3,12 +3,37 @@ import { supabase } from "../supabase-client";
 
 export const Auth = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (isSignUp) {
+      const { error: signUpError } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (signUpError) {
+        console.error("Error signing up", signUpError.message);
+        return;
+      }
+    } else {
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (signInError) {
+        console.error("Error signing in:", signInError.message);
+        return;
+      }
+    }
+  };
+
   return (
-    <div style={{ maxWidth: "400PX", margin: "0, auto", padding: "1rem" }}>
+    <div style={{ maxWidth: "400px", margin: "0 auto", padding: "1rem" }}>
       <h2>{isSignUp ? "Sign Up" : "Sign In"}</h2>
 
       <form onSubmit={handleSubmit}>
@@ -28,16 +53,10 @@ export const Auth = () => {
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setPassword(e.target.value)
           }
-          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5 rem" }}
+          style={{ width: "100%", marginBottom: "0.5rem", padding: "0.5rem" }}
         />
 
-        <button
-          type="submit"
-          style={{ padding: "0.5rem", marginRight: "0.5rem" }}
-        >
-          {/* "Sign Up"--> if isSignUp is true, otherwise--> "Sign In" */}
-          {isSignUp ? "Sign Up" : "Sign In"}
-        </button>
+        <button type="submit">{isSignUp ? "Sign Up" : "Sign In"}</button>
       </form>
     </div>
   );
