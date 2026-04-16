@@ -72,14 +72,20 @@ export const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setLoading(true);
 
     if (isSignUp) {
       const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
       });
+
+      setLoading(false);
 
       if (signUpError) {
         console.error("Error signing up:", signUpError.message);
@@ -90,6 +96,8 @@ export const Auth = () => {
         email,
         password,
       });
+
+      setLoading(false);
 
       if (signInError) {
         console.error("Error signing in:", signInError.message);
@@ -126,7 +134,7 @@ export const Auth = () => {
         />
 
         <button type="submit" className="auth-button">
-          {isSignUp ? "Sign Up" : "Sign In"}
+          {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
         </button>
       </form>
 
@@ -134,6 +142,7 @@ export const Auth = () => {
         type="button"
         className="auth-toggle"
         onClick={() => setIsSignUp(!isSignUp)}
+        disabled={loading} // Disable loading used to prevent toggling while an auth request is in progress
       >
         {isSignUp ? "Go to Sign In" : "Go to Sign Up"}
       </button>
