@@ -73,36 +73,57 @@ export const Auth = () => {
   const [password, setPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setLoading(true);
+    setMessage("");
+    setErrorMsg("");
+
+    // simple validation
+    if (!email.includes("@")) {
+      setErrorMsg("Please enter a valid email.");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setErrorMsg("Password must be at least 6 characters.");
+      setLoading(false);
+      return;
+    }
 
     if (isSignUp) {
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
       });
 
       setLoading(false);
 
-      if (signUpError) {
-        console.error("Error signing up:", signUpError.message);
+      if (error) {
+        setErrorMsg(error.message);
         return;
       }
+
+      setMessage("Account created! Please check your email.");
     } else {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       setLoading(false);
 
-      if (signInError) {
-        console.error("Error signing in:", signInError.message);
+      if (error) {
+        setErrorMsg(error.message);
         return;
       }
+
+      setMessage("Login successful!");
     }
   };
 
@@ -119,7 +140,7 @@ export const Auth = () => {
           value={email}
           className="auth-input"
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
+            setEmail(e.target.value.trim())
           }
         />
 
@@ -133,16 +154,20 @@ export const Auth = () => {
           }
         />
 
-        <button type="submit" className="auth-button">
+        <button type="submit" className="auth-button" disabled={loading}>
           {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
         </button>
       </form>
+
+      {/* SHOW ERROR / SUCCESS */}
+      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+      {message && <p style={{ color: "green" }}>{message}</p>}
 
       <button
         type="button"
         className="auth-toggle"
         onClick={() => setIsSignUp(!isSignUp)}
-        disabled={loading} // Disable loading used to prevent toggling while an auth request is in progress
+        disabled={loading}
       >
         {isSignUp ? "Go to Sign In" : "Go to Sign Up"}
       </button>
