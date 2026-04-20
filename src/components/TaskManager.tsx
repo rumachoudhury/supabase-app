@@ -1,4 +1,6 @@
-import { ChangeEvent, useEffect, useState } from "react";
+// import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
 import { supabase } from "../supabase-client";
 // import { Session } from "@supabase/supabase-js";
 import type { Session } from "@supabase/supabase-js";
@@ -159,9 +161,9 @@ function TaskManager({ session }: { session: Session }) {
 
       {/* List of Tasks */}
       <ul style={{ listStyle: "none", padding: 0 }}>
-        {tasks.map((task, key) => (
+        {tasks.map((task) => (
           <li
-            key={key.id}
+            key={task.id}
             style={{
               border: "1px solid #ccc",
               borderRadius: "4px",
