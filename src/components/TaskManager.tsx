@@ -14,7 +14,10 @@ interface Task {
 function TaskManager({ session }: { session: Session }) {
   const [newTask, setNewTask] = useState({ title: "", description: "" });
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [newDescription, setNewDescription] = useState("");
+  // const [newDescription, setNewDescription] = useState("");
+  const [editDescriptions, setEditDescriptions] = useState<{
+    [key: number]: string;
+  }>({});
 
   const [taskImage, setTaskImage] = useState<File | null>(null);
 
@@ -47,7 +50,7 @@ function TaskManager({ session }: { session: Session }) {
   const updateTask = async (id: number) => {
     const { error } = await supabase
       .from("tasks")
-      .update({ description: newDescription })
+      .update({ description: editDescriptions })
       .eq("id", id);
 
     if (error) {
@@ -158,7 +161,7 @@ function TaskManager({ session }: { session: Session }) {
       <ul style={{ listStyle: "none", padding: 0 }}>
         {tasks.map((task, key) => (
           <li
-            key={key}
+            key={key.id}
             style={{
               border: "1px solid #ccc",
               borderRadius: "4px",
@@ -173,7 +176,8 @@ function TaskManager({ session }: { session: Session }) {
               <div>
                 <textarea
                   placeholder="Updated description..."
-                  onChange={(e) => setNewDescription(e.target.value)}
+                  value={editDescriptions[task.id]}
+                  onChange={(e) => setEditDescriptions(e.target.value)}
                 />
                 <button
                   style={{ padding: "0.5rem 1rem", marginRight: "0.5rem" }}
