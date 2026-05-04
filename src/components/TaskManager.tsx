@@ -155,7 +155,7 @@ function TaskManager({ session }: { session: Session }) {
         <input type="file" accept="image/*" onChange={handleFileChange} />
 
         <button type="submit" style={{ padding: "0.5rem 1rem" }}>
-          Add Task
+          Add your Task
         </button>
       </form>
 
@@ -166,7 +166,7 @@ function TaskManager({ session }: { session: Session }) {
             key={task.id}
             style={{
               border: "1px solid #ccc",
-              borderRadius: "4px",
+              borderRadius: "5px",
               padding: "1rem",
               marginBottom: "0.5rem",
             }}
