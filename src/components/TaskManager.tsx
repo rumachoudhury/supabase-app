@@ -128,7 +128,7 @@ function TaskManager({ session }: { session: Session }) {
       });
   }, []);
 
-  console.log(tasks);
+  // console.log(tasks);
 
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "1rem" }}>
@@ -174,7 +174,7 @@ function TaskManager({ session }: { session: Session }) {
             <div>
               <h3>{task.title}</h3>
               <p>{task.description}</p>
-              <img src={task.image_url} style={{ height: 70 }} />
+              <img src={task.image_url} style={{ height: 80 }} />
               <div>
                 <textarea
                   placeholder="Updated description..."
